@@ -1,4 +1,5 @@
-version: "3"
+version: "3.3"
+
 services:
   piwigo:
     build:
@@ -10,11 +11,13 @@ services:
       - TZ=Europe/Moscow
     volumes:
       - ./docker/piwigo/config:/config
-      - ./docker/piwigo/gallery:/gallery
+      - ~/media/pictures/piwigo:/gallery
     ports:
-      - 9087:80
-      - 9043:443
+      - 7080:80
+      - 7443:443 
     restart: unless-stopped
+    depends_on:
+      - mariadb
 
   mariadb:
     build:
@@ -24,12 +27,10 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Moscow
-      - MYSQL_ROOT_PASSWORD=ROOT_ACCESS_PASSWORD
-      - MYSQL_DATABASE=USER_DB_NAME #optional
-      - MYSQL_USER=MYSQL_USER #optional
-      - MYSQL_PASSWORD=DATABASE_PASSWORD #optional
+      - MYSQL_ROOT_PASSWORD=piwigo_root
+      - MYSQL_DATABASE=piwigo_db
+      - MYSQL_USER=piwigo #optional
+      - MYSQL_PASSWORD=piwigo #optional
     volumes:
-      - ./docker/mariadb/config:/config
-    ports:
-      - 3306:3306
+      - ./docker/mariadb/config:/config  
     restart: unless-stopped
