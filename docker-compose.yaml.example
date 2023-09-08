@@ -13,8 +13,7 @@ services:
       - ./docker/piwigo/config:/config
       - ~/media/pictures/piwigo:/gallery
     ports:
-      - 7080:80
-      - 7443:443 
+      - 7080:80 
     restart: unless-stopped
     depends_on:
       - mariadb
